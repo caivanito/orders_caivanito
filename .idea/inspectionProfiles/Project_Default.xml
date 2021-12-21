@@ -1,0 +1,34 @@
+<component name="InspectionProjectProfileManager">
+  <profile version="1.0">
+    <option name="myName" value="Project Default" />
+    <inspection_tool class="PyPep8Inspection" enabled="true" level="WEAK WARNING" enabled_by_default="true">
+      <option name="ignoredErrors">
+        <list>
+          <option value="E501" />
+        </list>
+      </option>
+    </inspection_tool>
+    <inspection_tool class="PyUnresolvedReferencesInspection" enabled="true" level="WARNING" enabled_by_default="true">
+      <option name="ignoredIdentifiers">
+        <list>
+          <option value="paramiko" />
+          <option value="auto_qa.db" />
+          <option value="auto_qa.settings" />
+          <option value="auto_qa.login.urls.login" />
+          <option value="auto_qa.login.urls.LoginFormView" />
+          <option value="auto_qa.login.urls.*" />
+          <option value="auto_qa.qa.forms.qa" />
+          <option value="auto_qa.qa.urls.*" />
+          <option value="app.models.Test.objects" />
+          <option value="app.models.Action.objects" />
+          <option value="app.models.Element.objects" />
+          <option value="app.models.Execution.objects" />
+          <option value="app.models.ExecutionStatus.objects" />
+          <option value="django.db.models.fields.related.ForeignKey.task_step" />
+          <option value="django.db.models.fields.related.ForeignKey.subtask_name" />
+          <option value="app.models.SubTaskStatus.objects" />
+        </list>
+      </option>
+    </inspection_tool>
+  </profile>
+</component>
