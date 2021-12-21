@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from api.models import *
+from api.models import Product, Order, OrderDetail
 
 
 class ProductSerializer(serializers.ModelSerializer):
@@ -36,4 +36,4 @@ class OrderDetailSerializerList(serializers.ModelSerializer):
 class OrderSerializerList(serializers.ModelSerializer):
     class Meta:
         model = Order
-        fields = ['id', 'date_create', 'get_total', 'get_total_usd']
+        fields = ['id', 'date_create', 'get_total', 'get_total_usd', 'get_orders_details']

@@ -1,4 +1,5 @@
 from django.db import models
+from django.core import serializers
 from api.services import *
 
 
@@ -36,6 +37,11 @@ class Order(models.Model):
         valor_float = float(valor_venta.replace(',', '.'))
         usd_total = self.get_total / valor_float
         return usd_total
+
+    @property
+    def get_orders_details(self):
+        orders = serializers.serialize("json", OrderDetail.objects.filter(order_id=self.id))
+        return orders
 
 
 class OrderDetail(models.Model):
