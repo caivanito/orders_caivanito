@@ -45,7 +45,7 @@ class Order(models.Model):
 
 
 class OrderDetail(models.Model):
-    order = models.ForeignKey(Order, on_delete=models.CASCADE, verbose_name='Orden')
+    order = models.ForeignKey(Order, on_delete=models.CASCADE, related_name='order_details', verbose_name='Orden')
     product = models.ForeignKey(Product, on_delete=models.CASCADE, verbose_name='Producto')
     quantity = models.PositiveIntegerField(verbose_name='Cantidad')
 

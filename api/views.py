@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from django.contrib.auth.models import User, Group
-from rest_framework import viewsets, status
+from rest_framework import viewsets, status, renderers
 from rest_framework import permissions
 from api.serializers import *
 from rest_framework.decorators import action
@@ -54,3 +54,44 @@ class OrderDetailViewSet(viewsets.ModelViewSet):
 
     def get_kwargs(self):
         return self.kwargs.get('pk')
+
+
+class InvoiceViewSet(viewsets.ModelViewSet):
+    """
+    This viewset automatically provides `list`, `create`, `retrieve`,
+    `update` and `destroy` actions.
+    """
+
+    queryset = Order.objects.all()
+    serializer_class = OrderSerializer
+
+
+class InvoiceEntryViewSet(viewsets.ModelViewSet):
+    """
+    This viewset automatically provides `list`, `create`, `retrieve`,
+    `update` and `destroy` actions.
+    """
+
+    queryset = OrderDetail.objects.all()
+    serializer_class = OrderDetailSerializer
+
+
+class AddBillingHeaderView(viewsets.ModelViewSet):
+    queryset = Order.objects.all()
+    serializer_class = AddOrderSerializer
+
+    def create(self, request, *args, **kwargs):
+        serializer = AddOrderSerializer(data=request.data)
+        if serializer.is_valid():
+            items = request.data['order_details']
+            bh = Order.objects.create()
+            for item in items:
+                od = OrderDetail()
+                od.product = Product.objects.get(id=int(item['product']))
+                od.quantity = int(item['quantity'])
+                od.order = bh
+                od.save()
+            #     return bh
+            return Response({'status': 'order set'})
+        else:
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
