@@ -57,3 +57,8 @@ class OrderDetail(models.Model):
         product.stock = product.stock - self.quantity
         product.save()
         super().save(*args, **kwargs)
+
+    def set_stock(self):
+        product = Product.objects.get(id=self.product.id)
+        product.stock = product.stock + self.quantity
+        product.save()

@@ -20,12 +20,7 @@ from api.views import *
 
 router = routers.DefaultRouter()
 router.register(r'products', ProductViewSet)
-router.register('orders-list', OrderViewList)
-router.register('orders-detail-list', OrderDetailViewList)
-router.register('orders-detail-manager', OrderDetailViewSet)
-router.register('invoices', InvoiceViewSet)
-router.register('entries', InvoiceEntryViewSet)
-router.register('addbill', AddBillingHeaderView)
+router.register('orders', AddOrderSetView)
 
 urlpatterns = [
     path('admin/', admin.site.urls),

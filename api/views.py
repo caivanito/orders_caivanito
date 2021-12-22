@@ -15,68 +15,7 @@ class ProductViewSet(viewsets.ModelViewSet):
     serializer_class = ProductSerializer
 
 
-class OrderViewList(viewsets.ModelViewSet):
-    queryset = Order.objects.all()
-    serializer_class = OrderSerializerList
-
-
-class OrderDetailViewList(viewsets.ModelViewSet):
-    queryset = OrderDetail.objects.all()
-    serializer_class = OrderDetailSerializerList
-
-
-class OrderDetailViewSet(viewsets.ModelViewSet):
-    queryset = OrderDetail.objects.all()
-    serializer_class = OrderDetailSerializerSet
-
-    def create(self, request, *args, **kwargs):
-        serializer = OrderDetailSerializerSet(data=request.data)
-        if serializer.is_valid():
-
-            order = Order()
-            order.save()
-            serializer.save(order=order)
-            return Response({'status': 'order set'})
-        else:
-            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
-    def update(self, request, *args, **kwargs):
-        serializer = OrderDetailSerializerSet(data=request.data)
-        if serializer.is_valid():
-            instance = self.get_object()
-            instance.order = OrderDetail.objects.get(id=self.get_kwargs()).order
-            instance.product = Product.objects.get(id=request.data.get('product'))
-            instance.quantity = int(request.data.get('quantity'))
-            instance.save()
-            return Response({'status': 'order update'})
-        else:
-            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
-    def get_kwargs(self):
-        return self.kwargs.get('pk')
-
-
-class InvoiceViewSet(viewsets.ModelViewSet):
-    """
-    This viewset automatically provides `list`, `create`, `retrieve`,
-    `update` and `destroy` actions.
-    """
-
-    queryset = Order.objects.all()
-    serializer_class = OrderSerializer
-
-
-class InvoiceEntryViewSet(viewsets.ModelViewSet):
-    """
-    This viewset automatically provides `list`, `create`, `retrieve`,
-    `update` and `destroy` actions.
-    """
-
-    queryset = OrderDetail.objects.all()
-    serializer_class = OrderDetailSerializer
-
-
-class AddBillingHeaderView(viewsets.ModelViewSet):
+class AddOrderSetView(viewsets.ModelViewSet):
     queryset = Order.objects.all()
     serializer_class = AddOrderSerializer
 
@@ -95,3 +34,11 @@ class AddBillingHeaderView(viewsets.ModelViewSet):
             return Response({'status': 'order set'})
         else:
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    def destroy(self, request, *args, **kwargs):
+        instance = self.get_object()
+        for od in instance.order_details.all():
+            od.set_stock()
+
+        self.perform_destroy(instance)
+        return Response(status=status.HTTP_204_NO_CONTENT)
