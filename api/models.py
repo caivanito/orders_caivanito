@@ -26,8 +26,11 @@ class Order(models.Model):
 
     @property
     def get_total(self):
-        order_detail = OrderDetail.objects.get(order_id=self.pk)
-        return order_detail.product.price * order_detail.quantity
+        total = 0
+        order_detail = OrderDetail.objects.filter(order_id=self.pk)
+        for od in order_detail:
+            total = total + (od.product.price * od.quantity)
+        return total
 
     @property
     def get_total_usd(self):
