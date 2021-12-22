@@ -36,9 +36,9 @@ class Order(models.Model):
     def get_total_usd(self):
         dolar_blue = get_usd('https://www.dolarsi.com/api/api.php?type=valoresprincipales',
                              {'nombre': 'Dolar Blue', 'casa': 'casa'})
-        valor_venta = dolar_blue['casa']['venta']
-        valor_float = float(valor_venta.replace(',', '.'))
-        usd_total = self.get_total / valor_float
+        sale_value = dolar_blue['casa']['venta']
+        sale_value_float = float(sale_value.replace(',', '.'))
+        usd_total = self.get_total / sale_value_float
         return usd_total
 
     @property
