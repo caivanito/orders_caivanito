@@ -1,0 +1,1 @@
+web: gunicorn orders_caivanito.wsgi --log-file -
