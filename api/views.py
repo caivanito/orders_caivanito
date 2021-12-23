@@ -5,7 +5,7 @@ from rest_framework import permissions
 from api.serializers import *
 from rest_framework.decorators import action
 from rest_framework.response import Response
-
+from rest_framework.permissions import IsAuthenticated
 
 # Create your views here.
 
@@ -13,6 +13,7 @@ from rest_framework.response import Response
 class ProductViewSet(viewsets.ModelViewSet):
     queryset = Product.objects.all()
     serializer_class = ProductSerializer
+    #permission_classes = [IsAuthenticated]
 
 
 class AddOrderSetView(viewsets.ModelViewSet):

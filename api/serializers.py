@@ -26,10 +26,13 @@ class AddOrderSerializer(serializers.ModelSerializer):
             product_list = []
             for item in data['order_details']:
                 product_list.append(item)
-            if self.product_stock(product_list):
-                return data
+            if self.product_zero(product_list):
+                raise serializers.ValidationError('La cantidad debe ser mayor que 0!')
             else:
-                raise serializers.ValidationError('No hay Stock!')
+                if self.product_stock(product_list):
+                    return data
+                else:
+                    raise serializers.ValidationError('No hay Stock!')
 
     def product_duplicate(self, product_list):
         flag = False
@@ -55,6 +58,20 @@ class AddOrderSerializer(serializers.ModelSerializer):
                 flag = True
             else:
                 flag = False
+                break
+        if flag:
+            return True
+        else:
+            return False
+
+    def product_zero(self,product_list):
+        flag = False
+        for item in product_list:
+            quantity = item['quantity']
+            if quantity > 0:
+                flag = False
+            else:
+                flag = True
                 break
         if flag:
             return True
